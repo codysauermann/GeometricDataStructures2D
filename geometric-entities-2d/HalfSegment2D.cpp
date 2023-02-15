@@ -64,12 +64,12 @@ bool HalfSegment2D::operator<(HalfSegment2D hs)
 	Number m1, m2;
 
 	if (this->s.rightEndPoint.x == this->s.leftEndPoint.x)		// check for infinity slope
-		m1 = INT_MAX;
+		m1 = 100000;
 	else
 		m1 = (this->s.rightEndPoint.y - this->s.leftEndPoint.y) / (this->s.rightEndPoint.x - this->s.leftEndPoint.x);       // calculate slope of this normally
 
 	if (hs.s.rightEndPoint.x == hs.s.leftEndPoint.x)		// check for infinity slope
-		m2 = INT_MAX;
+		m2 = 100000;
 	else
 		m2 = (hs.s.rightEndPoint.y - hs.s.leftEndPoint.y) / (hs.s.rightEndPoint.x - hs.s.leftEndPoint.x);					  // calculate slope of hs normally
 
