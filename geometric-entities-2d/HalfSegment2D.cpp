@@ -62,14 +62,14 @@ bool HalfSegment2D::operator<(HalfSegment2D hs)
 
 	// Case 2b: 
 	Number m1, m2;
-
+	bool v1 = false, v2 = false;
 	if (this->s.rightEndPoint.x == this->s.leftEndPoint.x)		// check for infinity slope
-		m1 = 100000;
+		v1 = true;
 	else
 		m1 = (this->s.rightEndPoint.y - this->s.leftEndPoint.y) / (this->s.rightEndPoint.x - this->s.leftEndPoint.x);       // calculate slope of this normally
 
 	if (hs.s.rightEndPoint.x == hs.s.leftEndPoint.x)		// check for infinity slope
-		m2 = 100000;
+		v2 = true;
 	else
 		m2 = (hs.s.rightEndPoint.y - hs.s.leftEndPoint.y) / (hs.s.rightEndPoint.x - hs.s.leftEndPoint.x);					  // calculate slope of hs normally
 
@@ -77,7 +77,13 @@ bool HalfSegment2D::operator<(HalfSegment2D hs)
 	{
 		// so we are pretty much restricted to quadrants I and IV of the euclidean plane. Otherwise they could not both be left half segments.
 		// this means we just need to compare slopes to check for the counterclockwise rotation
-		if (m2 > m1)
+		if(v1 && v2)
+			;// case 3
+		else if(v2 && !v1)
+			return false;
+		else if(v1 && !v2)
+			return true;
+		else if (m2 > m1)
 			return true;
 		else if (m1 > m2)
 			return false;
@@ -87,7 +93,13 @@ bool HalfSegment2D::operator<(HalfSegment2D hs)
 	{
 		// so we are pretty much restricted to quadrants II and III of the euclidean plane. Otherwise they could not both be right half segments.
 		// this means we just need to compare slopes to check for the counterclockwise rotation
-		if (m2 > m1)
+		if(v1 && v2)
+			;// case 3
+		else if(v2 && !v1)
+			return true;
+		else if(v1 && !v2)
+			return false;
+		else if (m2 > m1)
 			return false;
 		else if (m1 > m2)
 			return true;
