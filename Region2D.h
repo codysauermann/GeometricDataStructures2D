@@ -12,7 +12,7 @@ private:
 
     class Impl;
 
-    unique_ptr<Impl> pimpl;
+    std::unique_ptr<Impl> pimpl;
 
 public:
     Region2D();
