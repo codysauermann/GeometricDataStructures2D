@@ -203,10 +203,94 @@ std::string chopZeros(std::string input)
     return input;
 }
 
-// (Sam)
 std::string output_string(mpq_class value)
 {
-    
+    mpz_class numer = value.get_num();
+    mpz_class denom = value.get_den();
+    mpz_class div1 = numer;
+    mpz_class div2 = denom;
+    mpz_class remainder = 0;
+    int tempRemainder = 0;
+
+    std::string ans = "";
+
+    std::string dividendSTR = div1.get_str();
+    std::string divisorSTR = div2.get_str();
+
+    if (dividendSTR.front() == '-')
+    {
+        dividendSTR.erase(0,1);
+        ans.push_back('-');
+    }
+    if (divisorSTR.front() == '-')
+    {
+        divisorSTR.erase(0,1);
+        if (ans.front() == '-')
+        {
+            ans.erase(0,1);
+        }
+        else
+        {
+            ans.push_back('-');
+        }
+    }
+
+    std::string dividendSTRO = dividendSTR;
+
+    int decimal = -1;
+    for (int i = 0; i < dividendSTR.length(); i++)
+    {
+        if (dividendSTR.at(i) == '.')
+            {
+                decimal = i;
+            }
+    }
+
+    if (decimal = -1)
+    {
+        decimal = dividendSTR.length();
+    }
+
+    while(dividendSTRO.length() < (decimal + 6))
+    {
+        dividendSTRO.push_back('0');
+    }
+ 
+    div1 = dividendSTRO.at(0) - '0';
+    div2 = std::stoi(divisorSTR);
+ 
+    int when = decimal + 5;
+    for (int i = 0; i < when; i++)
+    {
+        if(i == decimal)
+        {
+            ans.push_back('.');
+        }
+        else 
+        {
+            remainder = div1 / div2;
+
+            tempRemainder = std::stoi(remainder.get_str());
+            ans.push_back('0' + tempRemainder);
+
+            div1 = (div1 - (div2 * remainder)) * 10;
+            div1 = div1 + (dividendSTRO.at(i + 1) - '0');
+        }
+    }
+
+    while (ans.front() == '0' && ans.at(1) != '.')
+    {
+        ans.erase(ans.begin());
+    }
+
+    if (ans.front() == '-')
+    {
+        while (ans.at(1) == '0' && ans.at(2) != '.')
+        {
+            ans.erase(1,1);
+        }
+    }
+    return ans;
 }
 
 // (Sam)
