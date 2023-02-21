@@ -24,6 +24,12 @@ Number::Number(std::string s) : pimpl( new Impl())
     input_string(this->pimpl->value.get_num(), this->pimpl->value.get_den(), s);
     this->pimpl->value.canonicalize();
 }
+Number::Number(const char* s)
+{
+    input_string(this->pimpl->value.get_num(), this->pimpl->value.get_den(), std::string(s));
+    this->pimpl->value.canonicalize();
+}
+
 Number::Number(const Number& n) : pimpl( new Impl())
 {
     this->pimpl->value = n.pimpl->value;
@@ -108,6 +114,13 @@ Number& Number::operator=(std::string s)
     this->pimpl->value.canonicalize();
 	return *this;
 }
+Number& Number::operator=(const char* s)
+{
+    input_string(this->pimpl->value.get_num(), this->pimpl->value.get_den(), std::string(s));
+    this->pimpl->value.canonicalize();
+	return *this;
+}
+
 Number& Number::operator=(Number&& n)
 {
     this->pimpl = n.pimpl;
@@ -185,7 +198,6 @@ void input_string(mpz_class& a, mpz_class& b, std::string c)
         {
             c.pop_back();        // Pop off zeros at the back
         }
-
         powTen = (c.length() - 1) - indexP;  // How many decimal places to move
         b = pow(10, powTen);
         c.erase(indexP, 1);
