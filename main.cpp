@@ -41,9 +41,9 @@ int main (void)
     // Testing SimplePoint2D
 
     // Number objects for testing
-    Number one = 1.0;
-    Number two = 2.0;
-    Number three = 3.0;
+    Number one = "1.0";
+    Number two = "2.0";
+    Number three = "3.0";
 
     // Testing Constructors
     SimplePoint2D pointA;
