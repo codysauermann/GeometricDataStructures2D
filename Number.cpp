@@ -222,7 +222,7 @@ std::string output_string(mpq_class value)
     mpz_class div1 = numer;
     mpz_class div2 = denom;
     mpz_class remainder = 0;
-    int tempRemainder = 0;
+    mpz_class tempRemainder = 0;
 
     std::string ans = "";
 
@@ -267,9 +267,10 @@ std::string output_string(mpq_class value)
     {
         dividendSTRO.push_back('0');
     }
- 
+    
+    // First stoi change
     div1 = dividendSTRO.at(0) - '0';
-    div2 = std::stoi(divisorSTR);
+    div2 = mpz_class(divisorSTR, 10);
  
     int when = decimal + 5;
     for (int i = 0; i < when; i++)
@@ -282,8 +283,9 @@ std::string output_string(mpq_class value)
         {
             remainder = div1 / div2;
 
-            tempRemainder = std::stoi(remainder.get_str());
-            ans.push_back('0' + tempRemainder);
+            // second stoi change
+            tempRemainder = mpz_class(remainder.get_str(), 10);
+            ans.push_back('0' + tempRemainder.get_ui());
 
             div1 = (div1 - (div2 * remainder)) * 10;
             div1 = div1 + (dividendSTRO.at(i + 1) - '0');
