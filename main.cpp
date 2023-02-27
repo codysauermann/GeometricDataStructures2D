@@ -7,9 +7,9 @@
 using namespace std;
 
 
-int main (void)
+void test_Number(void)
 {
-    std::cout << "Compiled" << std::endl;
+    std::cout << "[Testing Number]" << endl;
 
     Number num1;
     std::cout << "Enter a number (Decimal Form): " << std::endl;
@@ -37,8 +37,11 @@ int main (void)
 
     Number squareRoot = sqrt(product);
     std::cout << "sqrt( " << num1 << " * " << num2 << " ) = " << squareRoot << std::endl;
+}
 
-    // Testing SimplePoint2D
+void test_SimplePoint2D()
+{
+    std::cout << "[Testing SimplePoint2D]" << endl;
 
     // Number objects for testing
     Number one = "1.0";
@@ -95,8 +98,25 @@ int main (void)
     else
         cout << "False [incorrect]\n" << endl;
     cout << "All tests ran for this data structure...\n\n" << endl;
+}
 
-    // Testing Segment2D
+void test_Segment2D()
+{
+    std::cout << "[Testing Segment2D]" << endl;
+
+    // Number objects for testing
+    Number one = "1.0";
+    Number two = "2.0";
+    Number three = "3.0";
+
+    // Testing Constructors
+    SimplePoint2D pointA;
+    SimplePoint2D pointB(one,two);
+    SimplePoint2D pointC(pointB);
+    SimplePoint2D pointD(one, one);
+    SimplePoint2D pointE(two, two);
+    SimplePoint2D pointF(two, one);
+    SimplePoint2D pointG(three, three);
 
     // Segment objects for testing
     Segment2D segA(pointD, pointB);
@@ -151,8 +171,34 @@ int main (void)
     else
         cout << "False [correct]\n" << endl;
     cout << "All tests ran for this data structure...\n\n" << endl;
+}
 
-    // Testing HalfSegment2D
+void test_HalfSegment2D()
+{
+    std::cout << "[Testing HalfSegment2D]" << endl;
+
+    // Number objects for testing
+    Number one = "1.0";
+    Number two = "2.0";
+    Number three = "3.0";
+
+    // Testing Constructors
+    SimplePoint2D pointA;
+    SimplePoint2D pointB(one,two);
+    SimplePoint2D pointC(pointB);
+    SimplePoint2D pointD(one, one);
+    SimplePoint2D pointE(two, two);
+    SimplePoint2D pointF(two, one);
+    SimplePoint2D pointG(three, three);
+
+    // Segment objects for testing
+    Segment2D segA(pointD, pointB);
+    Segment2D segB(pointF, pointE);
+    Segment2D segC(pointD, pointE);
+    Segment2D segD(segA);
+
+    Segment2D segLongC(pointD, pointG);
+
 
     // HalfSegment objects for testing
     HalfSegment2D hsegA(segA, true);
@@ -234,8 +280,45 @@ int main (void)
         cout << "False [correct]\n" << endl;
 
     cout << "All tests ran for this data structure...\n\n" << endl;
+}
 
+void test_AttributedHalfSegment2D()
+{
+    std::cout << "[Testing AttributedHalfSegment2D]" << endl;
     // Testing AttributedHalfSegment2D --- NOTE: does not provide extensive < (less than) testing because it is the same as HalfSegment tests
+
+    // Number objects for testing
+    Number one = "1.0";
+    Number two = "2.0";
+    Number three = "3.0";
+
+    // Testing Constructors
+    SimplePoint2D pointA;
+    SimplePoint2D pointB(one,two);
+    SimplePoint2D pointC(pointB);
+    SimplePoint2D pointD(one, one);
+    SimplePoint2D pointE(two, two);
+    SimplePoint2D pointF(two, one);
+    SimplePoint2D pointG(three, three);
+
+    // Segment objects for testing
+    Segment2D segA(pointD, pointB);
+    Segment2D segB(pointF, pointE);
+    Segment2D segC(pointD, pointE);
+    Segment2D segD(segA);
+
+    Segment2D segLongC(pointD, pointG);
+
+
+    // HalfSegment objects for testing
+    HalfSegment2D hsegA(segA, true);
+    HalfSegment2D hsegB(segB, true);
+    HalfSegment2D hsegC(segC, true);
+    HalfSegment2D hsegD(hsegA);
+
+    HalfSegment2D hsegFlipC(segC, false);
+    HalfSegment2D hsegLongC(segLongC, true);
+
 
     // AttributedHalfSegment objects for testing
     AttributedHalfSegment2D ahsegA(hsegA, true);
@@ -288,6 +371,14 @@ int main (void)
         cout << "False [correct]\n" << endl;
 
     cout << "All tests ran for this data structure... oh wow! I'm done. Goodnight moon :)\n\n" << endl;
+}
 
+int main (void)
+{
+    test_Number();
+    test_SimplePoint2D();
+    test_Segment2D();
+    test_HalfSegment2D();
+    test_AttributedHalfSegment2D();
     return 0;
 }

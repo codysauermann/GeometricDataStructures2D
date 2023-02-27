@@ -181,7 +181,7 @@ void input_string(mpz_class& a, mpz_class& b, std::string c)
         throw std::runtime_error("Error: Invalid Number Input Format\n");
     
     int powTen;
-    while(c.front() == '0')
+    while(c.front() == '0' && c.length() > 1 && c.at(1) != '.')
     {
         c.erase(c.begin());        // Pop off zeros in the front
     }
@@ -194,7 +194,7 @@ void input_string(mpz_class& a, mpz_class& b, std::string c)
     }
     else                            // Case 2: There is a decimal point
     {
-        while(c.back() == '0')
+        while(c.back() == '0' && c.length() > 1 && c.at(c.length() - 2) != '.')
         {
             c.pop_back();        // Pop off zeros at the back
         }
