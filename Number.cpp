@@ -24,6 +24,12 @@ Number::Number(std::string s) : pimpl( new Impl())
     input_string(this->pimpl->value.get_num(), this->pimpl->value.get_den(), s);
     this->pimpl->value.canonicalize();
 }
+Number::Number(const char* s)
+{
+    Number temp = std::string(s);
+    *this = std::move(temp);
+}
+
 Number::Number(const Number& n) : pimpl( new Impl())
 {
     this->pimpl->value = n.pimpl->value;
@@ -108,6 +114,13 @@ Number& Number::operator=(std::string s)
     this->pimpl->value.canonicalize();
 	return *this;
 }
+Number& Number::operator=(const char* s)
+{
+    input_string(this->pimpl->value.get_num(), this->pimpl->value.get_den(), std::string(s));
+    this->pimpl->value.canonicalize();
+	return *this;
+}
+
 Number& Number::operator=(Number&& n)
 {
     this->pimpl = n.pimpl;
@@ -168,7 +181,7 @@ void input_string(mpz_class& a, mpz_class& b, std::string c)
         throw std::runtime_error("Error: Invalid Number Input Format\n");
     
     int powTen;
-    while(c.front() == '0')
+    while(c.front() == '0' && c.length() > 1 && c.at(1) != '.')
     {
         c.erase(c.begin());        // Pop off zeros in the front
     }
@@ -181,11 +194,10 @@ void input_string(mpz_class& a, mpz_class& b, std::string c)
     }
     else                            // Case 2: There is a decimal point
     {
-        while(c.back() == '0')
+        while(c.back() == '0' && c.length() > 1 && c.at(c.length() - 2) != '.')
         {
             c.pop_back();        // Pop off zeros at the back
         }
-
         powTen = (c.length() - 1) - indexP;  // How many decimal places to move
         b = pow(10, powTen);
         c.erase(indexP, 1);
@@ -210,7 +222,7 @@ std::string output_string(mpq_class value)
     mpz_class div1 = numer;
     mpz_class div2 = denom;
     mpz_class remainder = 0;
-    int tempRemainder = 0;
+    mpz_class tempRemainder = 0;
 
     std::string ans = "";
 
@@ -255,9 +267,10 @@ std::string output_string(mpq_class value)
     {
         dividendSTRO.push_back('0');
     }
- 
+    
+    // First stoi change
     div1 = dividendSTRO.at(0) - '0';
-    div2 = std::stoi(divisorSTR);
+    div2 = mpz_class(divisorSTR, 10);
  
     int when = decimal + 5;
     for (int i = 0; i < when; i++)
@@ -270,8 +283,9 @@ std::string output_string(mpq_class value)
         {
             remainder = div1 / div2;
 
-            tempRemainder = std::stoi(remainder.get_str());
-            ans.push_back('0' + tempRemainder);
+            // second stoi change
+            tempRemainder = mpz_class(remainder.get_str(), 10);
+            ans.push_back('0' + tempRemainder.get_ui());
 
             div1 = (div1 - (div2 * remainder)) * 10;
             div1 = div1 + (dividendSTRO.at(i + 1) - '0');
