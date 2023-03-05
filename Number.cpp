@@ -24,12 +24,11 @@ Number::Number(std::string s) : pimpl( new Impl())
     input_string(this->pimpl->value.get_num(), this->pimpl->value.get_den(), s);
     this->pimpl->value.canonicalize();
 }
-Number::Number(const char* s)
+Number::Number(const char* s) : pimpl (new Impl())
 {
     input_string(this->pimpl->value.get_num(), this->pimpl->value.get_den(), std::string(s));
     this->pimpl->value.canonicalize();
 }
-
 Number::Number(const Number& n) : pimpl( new Impl())
 {
     this->pimpl->value = n.pimpl->value;
