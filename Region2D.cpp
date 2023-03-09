@@ -111,30 +111,45 @@ void Region2D::Impl::setFlags()
         sweepQueue.push(halfSegments[i]);
     }
 
-    HalfSegment2D currentHalfSeg;
+    HalfSegment2D currentHalfSeg = sweepQueue.front();
 
     while(!sweepQueue.empty())
     {
-        if(sweepStatus.empty())
-        {
-            sweepStatus.push_back(currentHalfSeg); //add half segment to sweep status at beginning
-            regionSegments.push_back(AttributedHalfSegment2D(currentHalfSeg,true));
-            regionSegments.push_back(AttributedHalfSegment2D(GetBrotherSeg(currentHalfSeg), true));
-        }
-        else if(GetDominatePoint(currentHalfSeg) == GetDominatePoint(sweepStatus.back())) //add half segment to sweep status at end
-        {
-            sweepStatus.push_back(currentHalfSeg);
-            regionSegments.push_back(AttributedHalfSegment2D(currentHalfSeg, !(GetAboveFlag(sweepStatus.back()))));
-            regionSegments.push_back(AttributedHalfSegment2D(GetBrotherSeg(currentHalfSeg), !(GetAboveFlag(sweepStatus.back()))));
-        }
-        else //add halfsegment to sweep status somewhere in the middle
-        {
-            int index = sweepStatus.size() - 1;
-            while(!CheckLessThan(GetDominatePoint(currentHalfSeg), sweepStatus[index])) //find index
+        if(currentHalfSeg.isDominatingPointLeft) {
+            if(sweepStatus.empty())
             {
-                index -= 1;
+                sweepStatus.push_back(currentHalfSeg); //add half segment to sweep status at beginning
+                regionSegments.push_back(AttributedHalfSegment2D(currentHalfSeg,true));
+                regionSegments.push_back(AttributedHalfSegment2D(GetBrotherSeg(currentHalfSeg), true));
             }
-            sweepStatus.emplace(sweepStatus.begin() + index, currentHalfSeg); //emplace at index
+            else if(GetDominatePoint(currentHalfSeg) == GetDominatePoint(sweepStatus.back())) //add half segment to sweep status at end
+            {
+                sweepStatus.push_back(currentHalfSeg);
+                regionSegments.push_back(AttributedHalfSegment2D(currentHalfSeg, !(GetAboveFlag(sweepStatus.back()))));
+                regionSegments.push_back(AttributedHalfSegment2D(GetBrotherSeg(currentHalfSeg), !(GetAboveFlag(sweepStatus.back()))));
+            }
+            else //add halfsegment to sweep status somewhere in the middle
+            {
+                int index = sweepStatus.size() - 1;
+                while(!CheckLessThan(GetDominatePoint(currentHalfSeg), sweepStatus[index])) //find index
+                {
+                    index -= 1;
+                }
+                sweepStatus.emplace(sweepStatus.begin() + index, currentHalfSeg); //emplace at index
+                regionSegments.push_back(AttributedHalfSegment2D(currentHalfSeg, !(GetAboveFlag(sweepStatus[index - 1]))));
+                regionSegments.push_back(AttributedHalfSegment2D(GetBrotherSeg(currentHalfSeg), !(GetAboveFlag(sweepStatus[index - 1]))));
+            }
+        }
+        else {
+            //remove halfsegment from status
+            for(int  i = 0; i < sweepStatus.size(); i++) 
+            {
+                if(sweepStatus[i].s == currentHalfSeg.s)
+                {
+                    sweepStatus.erase(sweepStatus.begin() + i);
+                    break;
+                }
+            }
         }
     }
 }
