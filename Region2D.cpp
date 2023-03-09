@@ -112,6 +112,7 @@ void Region2D::Impl::setFlags()
     }
 
     HalfSegment2D currentHalfSeg = sweepQueue.front();
+    sweepQueue.pop();
 
     while(!sweepQueue.empty())
     {
@@ -151,6 +152,7 @@ void Region2D::Impl::setFlags()
                 }
             }
         }
+
     }
 }
 
