@@ -4,6 +4,10 @@
 #include "Segment2D.h"
 #include "HalfSegment2D.h"
 #include "AttributedHalfSegment2D.h"
+#include "Line2D.h"
+#include "Point2D.h"
+#include "Region2D.h"
+
 using namespace std;
 
 
@@ -371,6 +375,34 @@ void test_AttributedHalfSegment2D()
         cout << "False [correct]\n" << endl;
 
     cout << "All tests ran for this data structure... oh wow! I'm done. Goodnight moon :)\n\n" << endl;
+}
+
+void test_Point2D()
+{
+    Number one = "1.0";
+    Number two = "2.0";
+
+    std::vector<SimplePoint2D> pointVector;
+    SimplePoint2D pointA(two,one);
+    pointVector.push_back(pointA);
+    SimplePoint2D pointB(one,two);
+    pointVector.push_back(pointB);
+    SimplePoint2D pointC(two,two);
+    pointVector.push_back(pointC);
+    SimplePoint2D pointD(one,one);
+    pointVector.push_back(pointD);
+
+    Point2D pointOBJ(pointVector);
+}
+
+void test_Line2D() 
+{
+
+}
+
+void test_Region2D()
+{
+
 }
 
 int main (void)
