@@ -23,7 +23,6 @@ struct Region2D::Impl {
     HalfSegment2D GetBrotherSeg(HalfSegment2D currentHalfSeg);
     bool GetAboveFlag(HalfSegment2D currentHalfSeg);
     bool CheckLessThan(SimplePoint2D dp, HalfSegment2D halfSeg);
-    //void setFlagsInCycle(std::vector<HalfSegment2D> cycle);
 };
 
 
@@ -37,7 +36,6 @@ Region2D::Impl::~Impl() {}
 Region2D::Impl::Impl(std::vector<Segment2D> _regionSegments)
 {
     std::vector<HalfSegment2D> HalfSegVec; //temporary vector of half segments for later use
-    //_regionSegments.erase(unique(_regionSegments.begin(), _regionSegments.end()), _regionSegments.end()); //remove any duplicate segments
     for(int i = 0; i < _regionSegments.size(); i++)
     {
         HalfSegment2D domHalfSeg = HalfSegment2D(_regionSegments[i], true); //set dominant point half segment from segment
@@ -111,11 +109,12 @@ void Region2D::Impl::setFlags()
         sweepQueue.push(halfSegments[i]);
     }
 
-    HalfSegment2D currentHalfSeg = sweepQueue.front();
-    sweepQueue.pop();
-
+    HalfSegment2D currentHalfSeg;
     while(!sweepQueue.empty())
     {
+        currentHalfSeg = sweepQueue.front();
+        sweepQueue.pop();
+
         if(currentHalfSeg.isDominatingPointLeft) {
             if(sweepStatus.empty())
             {
