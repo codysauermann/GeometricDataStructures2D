@@ -31,10 +31,18 @@ Segment2D::Segment2D(Segment2D&& s)
 	this->rightEndPoint = std::move(s.rightEndPoint);
 }
 
-void Segment2D::operator=(Segment2D s)
+Segment2D& Segment2D::operator=(const Segment2D& s)
 {
 	this->leftEndPoint = s.leftEndPoint;
 	this->rightEndPoint = s.rightEndPoint;
+	return *this;
+}
+
+Segment2D& Segment2D::operator=(Segment2D&& s)
+{
+	this->leftEndPoint = std::move(s.leftEndPoint);
+	this->rightEndPoint = std::move(s.rightEndPoint);
+	return *this;
 }
 
 bool Segment2D::operator==(Segment2D s)

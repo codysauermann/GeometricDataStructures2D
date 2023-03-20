@@ -24,10 +24,18 @@ HalfSegment2D::HalfSegment2D(HalfSegment2D&& hs)
 	this->isDominatingPointLeft = std::move(hs.isDominatingPointLeft);
 }
 
-void HalfSegment2D::operator=(HalfSegment2D hs)
+HalfSegment2D& HalfSegment2D::operator=(const HalfSegment2D& hs)
 {
 	this->s = hs.s;
 	this->isDominatingPointLeft = hs.isDominatingPointLeft;
+	return *this;
+}
+
+HalfSegment2D& HalfSegment2D::operator=(HalfSegment2D&& hs)
+{
+	this->s = std::move(hs.s);
+	this->isDominatingPointLeft = std::move(hs.isDominatingPointLeft);
+	return *this;
 }
 
 bool HalfSegment2D::operator==(HalfSegment2D hs)

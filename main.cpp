@@ -405,6 +405,41 @@ void test_Point2D()
     Point2D pointOBJ(pointVector);
 }
 
+void test_Line2D()
+{
+     std::cout << "Testing Line2D" << std::endl;
+
+    // Points in space
+    SimplePoint2D a("1.0", "2.0");
+    SimplePoint2D b("2.0", "5.0");
+    SimplePoint2D c("2.0", "3.0");
+    SimplePoint2D d("3.0", "2.0");
+    SimplePoint2D e("3.0", "6.0");
+    SimplePoint2D f("5.0", "7.0");
+    SimplePoint2D g("3.0", "6.0");
+    SimplePoint2D h("5.0", "5.0");
+    SimplePoint2D i("6.0", "6.0");
+    SimplePoint2D j("7.0", "2.0");
+
+    // Construction of segments
+    std::vector<Segment2D> lineSegments;
+    Segment2D A(e, j);
+    lineSegments.push_back(A);
+    Segment2D B(f, g);
+    lineSegments.push_back(B);
+    Segment2D C(i, h);
+    lineSegments.push_back(C);
+    Segment2D D(a, c);
+    lineSegments.push_back(D);
+    Segment2D E(b, d);
+    lineSegments.push_back(E);
+
+    // Construct Complex line object
+    Line2D lines(lineSegments);
+
+    std::cout << "Testing Line2D Done" << std::endl;
+}
+
 void test_Line2D() 
 {
 
@@ -419,6 +454,7 @@ int main (void)
 {
     //test_Number();
     test_SimplePoint2D();
+    test_Point2D();
     test_Segment2D();
     test_HalfSegment2D();
     test_AttributedHalfSegment2D();

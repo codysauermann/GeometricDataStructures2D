@@ -22,10 +22,18 @@ SimplePoint2D::SimplePoint2D(SimplePoint2D&& p)
 	this->y = std::move(p.y);
 }
 
-void SimplePoint2D::operator=(SimplePoint2D p)
+SimplePoint2D& SimplePoint2D::operator=(const SimplePoint2D& p)
 {
 	this->x = p.x;
 	this->y = p.y;
+	return *this;
+}
+
+SimplePoint2D& SimplePoint2D::operator=(SimplePoint2D&& p)
+{
+	this->x = std::move(p.x);
+	this->y = std::move(p.y);
+	return *this;
 }
 
 bool SimplePoint2D::operator<(SimplePoint2D p)
@@ -59,4 +67,12 @@ bool SimplePoint2D::operator>(const SimplePoint2D p)
 bool SimplePoint2D::operator!=(const SimplePoint2D p)
 {
 	return !((*this) == p);
+}
+
+
+SimplePoint2D& SimplePoint2D::operator=(SimplePoint2D&& p)
+{
+	this->x = std::move(p.x);
+	this->y = std::move(p.y);
+	return *this;
 }
