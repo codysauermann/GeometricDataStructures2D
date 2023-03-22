@@ -83,14 +83,23 @@ bool HalfSegment2D::operator<(HalfSegment2D hs)
 
 	if (this->isDominatingPointLeft)                     		// both are left half segments
 	{
+		Number zero = "0.0";
 		// so we are pretty much restricted to quadrants I and IV of the euclidean plane. Otherwise they could not both be left half segments.
 		// this means we just need to compare slopes to check for the counterclockwise rotation
 		if(v1 && v2)
 			;// case 3
 		else if(v2 && !v1)
+		{
+			if(m1 > zero)
+				return true;
 			return false;
+		}
 		else if(v1 && !v2)
+		{
+			if(m2 > zero)
+				return false;
 			return true;
+		}
 		else if (m2 > m1)
 			return true;
 		else if (m1 > m2)

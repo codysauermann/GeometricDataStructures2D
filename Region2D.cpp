@@ -23,7 +23,6 @@ struct Region2D::Impl {
     HalfSegment2D GetBrotherSeg(HalfSegment2D currentHalfSeg);
     bool GetAboveFlag(HalfSegment2D currentHalfSeg);
     bool CheckLessThan(SimplePoint2D dp, HalfSegment2D halfSeg);
-    //void setFlagsInCycle(std::vector<HalfSegment2D> cycle);
 };
 
 
@@ -37,7 +36,6 @@ Region2D::Impl::~Impl() {}
 Region2D::Impl::Impl(std::vector<Segment2D> _regionSegments)
 {
     std::vector<HalfSegment2D> HalfSegVec; //temporary vector of half segments for later use
-    //_regionSegments.erase(unique(_regionSegments.begin(), _regionSegments.end()), _regionSegments.end()); //remove any duplicate segments
     for(int i = 0; i < _regionSegments.size(); i++)
     {
         HalfSegment2D domHalfSeg = HalfSegment2D(_regionSegments[i], true); //set dominant point half segment from segment
@@ -112,30 +110,48 @@ void Region2D::Impl::setFlags()
     }
 
     HalfSegment2D currentHalfSeg;
-
     while(!sweepQueue.empty())
     {
-        if(sweepStatus.empty())
-        {
-            sweepStatus.push_back(currentHalfSeg); //add half segment to sweep status at beginning
-            regionSegments.push_back(AttributedHalfSegment2D(currentHalfSeg,true));
-            regionSegments.push_back(AttributedHalfSegment2D(GetBrotherSeg(currentHalfSeg), true));
-        }
-        else if(GetDominatePoint(currentHalfSeg) == GetDominatePoint(sweepStatus.back())) //add half segment to sweep status at end
-        {
-            sweepStatus.push_back(currentHalfSeg);
-            regionSegments.push_back(AttributedHalfSegment2D(currentHalfSeg, !(GetAboveFlag(sweepStatus.back()))));
-            regionSegments.push_back(AttributedHalfSegment2D(GetBrotherSeg(currentHalfSeg), !(GetAboveFlag(sweepStatus.back()))));
-        }
-        else //add halfsegment to sweep status somewhere in the middle
-        {
-            int index = sweepStatus.size() - 1;
-            while(!CheckLessThan(GetDominatePoint(currentHalfSeg), sweepStatus[index])) //find index
+        currentHalfSeg = sweepQueue.front();
+        sweepQueue.pop();
+
+        if(currentHalfSeg.isDominatingPointLeft) {
+            if(sweepStatus.empty())
             {
-                index -= 1;
+                sweepStatus.push_back(currentHalfSeg); //add half segment to sweep status at beginning
+                regionSegments.push_back(AttributedHalfSegment2D(currentHalfSeg,true));
+                regionSegments.push_back(AttributedHalfSegment2D(GetBrotherSeg(currentHalfSeg), true));
             }
-            sweepStatus.emplace(sweepStatus.begin() + index, currentHalfSeg); //emplace at index
+            else if(GetDominatePoint(currentHalfSeg) == GetDominatePoint(sweepStatus.back())) //add half segment to sweep status at end
+            {
+                sweepStatus.push_back(currentHalfSeg);
+                regionSegments.push_back(AttributedHalfSegment2D(currentHalfSeg, !(GetAboveFlag(sweepStatus.back()))));
+                regionSegments.push_back(AttributedHalfSegment2D(GetBrotherSeg(currentHalfSeg), !(GetAboveFlag(sweepStatus.back()))));
+            }
+            else //add halfsegment to sweep status somewhere in the middle
+            {
+                int index = sweepStatus.size() - 1;
+                while(!CheckLessThan(GetDominatePoint(currentHalfSeg), sweepStatus[index])) //find index
+                {
+                    index -= 1;
+                }
+                sweepStatus.emplace(sweepStatus.begin() + index, currentHalfSeg); //emplace at index
+                regionSegments.push_back(AttributedHalfSegment2D(currentHalfSeg, !(GetAboveFlag(sweepStatus[index - 1]))));
+                regionSegments.push_back(AttributedHalfSegment2D(GetBrotherSeg(currentHalfSeg), !(GetAboveFlag(sweepStatus[index - 1]))));
+            }
         }
+        else {
+            //remove halfsegment from status
+            for(int  i = 0; i < sweepStatus.size(); i++) 
+            {
+                if(sweepStatus[i].s == currentHalfSeg.s)
+                {
+                    sweepStatus.erase(sweepStatus.begin() + i);
+                    break;
+                }
+            }
+        }
+
     }
 }
 
