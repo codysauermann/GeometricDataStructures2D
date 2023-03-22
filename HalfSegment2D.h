@@ -9,7 +9,8 @@ struct HalfSegment2D
 	HalfSegment2D(const HalfSegment2D& hs);
 	HalfSegment2D(Segment2D s, bool isLeft);
 	HalfSegment2D(HalfSegment2D&& hs);
-	void operator=(const HalfSegment2D hs);
+	HalfSegment2D& operator=(const HalfSegment2D& hs);
+	HalfSegment2D& operator=(HalfSegment2D&& hs);
 	bool operator<(const HalfSegment2D hs);
 	bool operator<=(const HalfSegment2D hs);
 	bool operator==(const HalfSegment2D hs);
