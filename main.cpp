@@ -403,6 +403,11 @@ void test_Point2D()
     pointVector.push_back(pointD);
 
     Point2D pointOBJ(pointVector);
+
+    for (auto itr = pointOBJ.begin(); itr != pointOBJ.end(); itr++)
+    {
+        std::cout << "(" << itr->x << " , " << itr->y << ")" << std::endl;
+    }
 }
 
 void test_Line2D()

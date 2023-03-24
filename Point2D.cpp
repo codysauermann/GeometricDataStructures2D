@@ -29,3 +29,13 @@ Point2D::Point2D(Point2D &&sourcePoint2D)
 }
 
 Point2D::~Point2D(){}
+
+Point2D::iterator Point2D::begin() 
+{
+    return this->pimpl->pointCollection.begin();
+}
+
+Point2D::iterator Point2D::end() 
+{
+    return this->pimpl->pointCollection.end();
+}
