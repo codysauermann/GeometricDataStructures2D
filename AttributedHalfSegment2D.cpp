@@ -20,38 +20,38 @@ AttributedHalfSegment2D::AttributedHalfSegment2D(AttributedHalfSegment2D&& ahs)
 	this->above = std::move(ahs.above);
 }
 
-void AttributedHalfSegment2D::operator=(AttributedHalfSegment2D ahs)
+void AttributedHalfSegment2D::operator=(const AttributedHalfSegment2D& ahs)
 {
 	this->hs.s = ahs.hs.s;
 	this->hs.isDominatingPointLeft = ahs.hs.isDominatingPointLeft;
 }
 
-bool AttributedHalfSegment2D::operator==(AttributedHalfSegment2D ahs)
+bool AttributedHalfSegment2D::operator==(const AttributedHalfSegment2D& ahs)
 {
 	return (this->hs.s == ahs.hs.s && this->hs.isDominatingPointLeft == ahs.hs.isDominatingPointLeft);
 }
 
-bool AttributedHalfSegment2D::operator>=(const AttributedHalfSegment2D ahs)
+bool AttributedHalfSegment2D::operator>=(const AttributedHalfSegment2D& ahs)
 {
 	return !((*this) < ahs);
 }
 
-bool AttributedHalfSegment2D::operator>(const AttributedHalfSegment2D ahs)
+bool AttributedHalfSegment2D::operator>(const AttributedHalfSegment2D& ahs)
 {
 	return !((*this) <= ahs);
 }
 
-bool AttributedHalfSegment2D::operator<(AttributedHalfSegment2D ahs)
+bool AttributedHalfSegment2D::operator<(const AttributedHalfSegment2D& ahs)
 {
 	return (this->hs < ahs.hs);
 }
 
-bool AttributedHalfSegment2D::operator<=(AttributedHalfSegment2D ahs)
+bool AttributedHalfSegment2D::operator<=(const AttributedHalfSegment2D& ahs)
 {
 	return (*this < ahs || *this == ahs);
 }
 
-bool AttributedHalfSegment2D::operator!=(const AttributedHalfSegment2D ahs)
+bool AttributedHalfSegment2D::operator!=(const AttributedHalfSegment2D& ahs)
 {
 	return !((*this) == ahs);
 }
