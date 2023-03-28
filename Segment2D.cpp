@@ -45,23 +45,23 @@ Segment2D& Segment2D::operator=(Segment2D&& s)
 	return *this;
 }
 
-bool Segment2D::operator==(Segment2D s)
+bool Segment2D::operator==(const Segment2D& s)
 {
 	return (this->leftEndPoint == s.leftEndPoint && (*this).rightEndPoint == s.rightEndPoint);
 	
 }
 
-bool Segment2D::operator>=(const Segment2D s)
+bool Segment2D::operator>=(const Segment2D& s)
 {
 	return !((*this) < s);
 }
 
-bool Segment2D::operator>(const Segment2D s)
+bool Segment2D::operator>(const Segment2D& s)
 {
 	return !((*this) <= s);
 }
 
-bool Segment2D::operator<(Segment2D s)
+bool Segment2D::operator<(const Segment2D& s)
 {
 	if (this->leftEndPoint < s.leftEndPoint)
 		return true;
@@ -69,12 +69,12 @@ bool Segment2D::operator<(Segment2D s)
 		return (this->leftEndPoint == s.leftEndPoint && this->rightEndPoint < s.rightEndPoint);
 }
 
-bool Segment2D::operator<=(Segment2D s)
+bool Segment2D::operator<=(const Segment2D& s)
 {
 	return ((*this) < s || (*this) == s);
 }
 
-bool Segment2D::operator!=(const Segment2D s)
+bool Segment2D::operator!=(const Segment2D& s)
 {
 	return !((*this) == s);
 }

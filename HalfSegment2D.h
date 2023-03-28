@@ -11,12 +11,12 @@ struct HalfSegment2D
 	HalfSegment2D(HalfSegment2D&& hs);
 	HalfSegment2D& operator=(const HalfSegment2D& hs);
 	HalfSegment2D& operator=(HalfSegment2D&& hs);
-	bool operator<(const HalfSegment2D hs);
-	bool operator<=(const HalfSegment2D hs);
-	bool operator==(const HalfSegment2D hs);
-	bool operator>=(const HalfSegment2D hs);
-	bool operator>(const HalfSegment2D hs);
-	bool operator!=(const HalfSegment2D hs);
+	bool operator<(const HalfSegment2D& hs);
+	bool operator<=(const HalfSegment2D& hs);
+	bool operator==(const HalfSegment2D& hs);
+	bool operator>=(const HalfSegment2D& hs);
+	bool operator>(const HalfSegment2D& hs);
+	bool operator!=(const HalfSegment2D& hs);
 	SimplePoint2D getDP();
 };
 #endif
