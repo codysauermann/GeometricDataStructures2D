@@ -79,7 +79,7 @@ bool Segment2D::operator!=(const Segment2D& s)
 	return !((*this) == s);
 }
 
-SimplePoint2D Segment2D::findIntersection(Segment2D s)
+std::pair<bool, SimplePoint2D> Segment2D::findIntersection(Segment2D s)
 {
 	Number x1 = leftEndPoint.x;
 	Number y1 = leftEndPoint.y;
@@ -94,7 +94,7 @@ SimplePoint2D Segment2D::findIntersection(Segment2D s)
 	SimplePoint2D empty;
 	Number zero = "0.0";
 	if (denominator == zero)
-		return empty;
+		return std::make_pair(false, empty);
 	else 
 	{
 		Number ia = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) / denominator;
@@ -103,15 +103,25 @@ SimplePoint2D Segment2D::findIntersection(Segment2D s)
 		if (ia < zero || ia > one || ib < zero || ib > one) 
 		{
 			// The intersection point does not exist in at least one of the segments.
-			return empty;
+			return std::make_pair(false, empty);
 		} 
 		else 
 		{
 			Number x = x1 + ia * (x2 - x1);
 			Number y = y1 + ia * (y2 - y1);
 			SimplePoint2D p(x, y);
-			return p;
+			return std::make_pair(true, p);
 		}
 	}
-	return empty;
+	return std::make_pair(false, empty);
 }
+
+bool Segment2D::poiOnSeg(SimplePoint2D p)
+{
+	Number dis = (rightEndPoint.x - leftEndPoint.x) * (rightEndPoint.x - leftEndPoint.x) + (rightEndPoint.y - leftEndPoint.y) * (rightEndPoint.y - leftEndPoint.y);
+	Number fh = (rightEndPoint.x - p.x) * (rightEndPoint.x - p.x) + (rightEndPoint.y - p.y) * (p.y - leftEndPoint.y);
+	Number sh = (p.x - leftEndPoint.x) * (p.x - leftEndPoint.x) + (p.y - leftEndPoint.y) * (p.y - leftEndPoint.y);
+	if(fh + sh == dis)
+		return true;
+	return false;
+}	

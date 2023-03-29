@@ -16,6 +16,7 @@ struct Segment2D
 	bool operator>=(const Segment2D& s);
 	bool operator>(const Segment2D& s);
 	bool operator!=(const Segment2D& s);
-	SimplePoint2D findIntersection(Segment2D s);
+	std::pair<bool, SimplePoint2D> findIntersection(Segment2D s);
+	bool poiOnSeg(SimplePoint2D p);
 };
 #endif
