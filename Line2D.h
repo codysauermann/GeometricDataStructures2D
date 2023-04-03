@@ -17,6 +17,10 @@ public:
     Line2D(const Line2D &sourceLine2D); //copy constructor
     Line2D(Line2D &&sourceLine2D); //move constructor
     ~Line2D(); //Destructor
+
+    typedef std::vector<HalfSegment2D>::iterator iterator;
+    iterator begin();
+    iterator end();
 };
 
 

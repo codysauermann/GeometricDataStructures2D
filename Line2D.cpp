@@ -50,3 +50,12 @@ Line2D::Line2D(Line2D &&sourceLine2D)
 
 //destructor
 Line2D::~Line2D(){}
+
+Line2D::iterator Line2D::begin()
+{
+    return this->pimpl->lineSegments.begin();
+}
+Line2D::iterator Line2D::end()
+{
+    return this->pimpl->lineSegments.end();
+}

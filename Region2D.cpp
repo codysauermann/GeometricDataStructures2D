@@ -7,6 +7,7 @@
 #include "HalfSegment2D.h"
 #include "Segment2D.h"
 #include <memory>
+#include <iostream>
 
 //Implementation
 struct Region2D::Impl {
@@ -17,6 +18,7 @@ struct Region2D::Impl {
 
     std::vector<AttributedHalfSegment2D> regionSegments;
     std::vector<HalfSegment2D> halfSegments;
+    std::vector<Segment2D> segments;
 
     void setFlags();
     SimplePoint2D GetDominatePoint(HalfSegment2D inputHalfSegment);
@@ -35,6 +37,8 @@ Region2D::Impl::~Impl() {}
 
 Region2D::Impl::Impl(std::vector<Segment2D> _regionSegments)
 {
+    this->segments = _regionSegments;
+
     std::vector<HalfSegment2D> HalfSegVec; //temporary vector of half segments for later use
     for(int i = 0; i < _regionSegments.size(); i++)
     {
@@ -45,9 +49,7 @@ Region2D::Impl::Impl(std::vector<Segment2D> _regionSegments)
     }
     std::sort(HalfSegVec.begin(), HalfSegVec.end());
 
-
     this->halfSegments = HalfSegVec;
-    setFlags();
 }
 
 SimplePoint2D Region2D::Impl::GetDominatePoint(HalfSegment2D inputHalfSegment)
@@ -82,20 +84,19 @@ bool Region2D::Impl::GetAboveFlag(HalfSegment2D currentHalfSeg)
 bool Region2D::Impl::CheckLessThan(SimplePoint2D dp, HalfSegment2D halfSeg)
 {
     Segment2D seg = halfSeg.s;
-    SimplePoint2D leftPoint = seg.leftEndPoint;
-    SimplePoint2D rightPoint = seg.rightEndPoint;
-    Number slope = (rightPoint.y - leftPoint.y) / (rightPoint.x - leftPoint.x);
-    Number b = leftPoint.y / (slope * leftPoint.x);
+    SimplePoint2D left = seg.leftEndPoint;
+    SimplePoint2D right = seg.rightEndPoint;
+
+    // handle infinite slope
+    if (right.x == left.x) {
+        return dp < left;
+    }
+
+    Number slope = (right.y - left.y) / (right.x - left.x);
+    Number b = left.y - (slope * left.x);   // The minus '-' was originally a '/'. I think this is supposed to be based on y=mx+b, which rewrites into b=y-mx.
     Number halfSegY = (dp.x * slope) + b;
-    if(dp.y < halfSegY) 
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
- 
+
+    return dp.y < halfSegY;
 }
 
 void Region2D::Impl::setFlags()
@@ -142,7 +143,7 @@ void Region2D::Impl::setFlags()
         }
         else {
             //remove halfsegment from status
-            for(int  i = 0; i < sweepStatus.size(); i++) 
+            for(int  i = 0; i < sweepStatus.size(); i++)
             {
                 if(sweepStatus[i].s == currentHalfSeg.s)
                 {
@@ -176,3 +177,41 @@ Region2D::Region2D(std::vector<Segment2D> region) : pimpl(new Impl(region)) {}
 //move constructor
 Region2D::Region2D(Region2D &&region) : pimpl(std::move(region.pimpl)) {}
 
+//destructor
+Region2D::~Region2D() {}
+
+//iterator methods
+Region2D::iterator Region2D::begin()
+{
+    return this->pimpl->regionSegments.begin();
+}
+Region2D::iterator Region2D::end()
+{
+    return this->pimpl->regionSegments.end();
+}
+
+/*void Region2D::print()
+{
+    for (Segment2D s : this->getSegments())
+        s.print();
+}*/
+
+std::vector<Segment2D> Region2D::getSegments()
+{
+    std::vector<Segment2D> segments;
+    for (HalfSegment2D h : this->pimpl->halfSegments)
+        if (h.isDominatingPointLeft)
+            segments.push_back(h.s);
+    return segments;
+}
+
+bool Region2D::operator==(const Region2D& other) const
+{
+    for (int i = 0; i < std::min(this->pimpl->halfSegments.size(), other.pimpl->halfSegments.size()); i++) {
+        HalfSegment2D h1 = this->pimpl->halfSegments[i];
+        HalfSegment2D h2 = other.pimpl->halfSegments[i];
+        if (h1 != h2)
+            return false;
+    }
+    return true;
+}
